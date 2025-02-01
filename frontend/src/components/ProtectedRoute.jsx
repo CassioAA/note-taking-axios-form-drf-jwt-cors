@@ -4,15 +4,16 @@ import api from "../api";
 import { REFRESH_TOKEN, ACCESS_TOKEN } from "../constants";
 import { useState, useEffect } from "react";
 
-
 function ProtectedRoute({ children }) {
     const [isAuthorized, setIsAuthorized] = useState(null);
 
+    // falha na autenticação, sem autorização
     useEffect(() => {
         auth().catch(() => setIsAuthorized(false))
     }, [])
 
     const refreshToken = async () => {
+        // tokens no localStorage apenas para faciliar por ora, não é recomendado
         const refreshToken = localStorage.getItem(REFRESH_TOKEN);
         try {
             const res = await api.post("/api/token/refresh/", {
